@@ -14,11 +14,32 @@ namespace DevFestEvent.Controllers
 {
     public class SessionController : Controller
     {
+
+        class TnySesh
+        {
+            public int ID { get; set; }
+            public string SessionName { get; set; }
+            public string SessionHTML { get; set; }
+            public string CustomURL { get; set; }
+
+        }
         //
         // GET: /Session/
-        public String Index()
+        public ActionResult Index()
         {
-            return "hi";
+            List<TnySesh> ssnss = new List<TnySesh>();
+            ApplicationDbContext db = new ApplicationDbContext();
+            foreach (var s in db.Sessions)
+            {
+                ssnss.Add(new TnySesh()
+                {
+                    ID = s.IID,
+                    SessionHTML = s.Description,
+                    SessionName = s.Title,
+                    CustomURL = s.CustomURL
+                });
+            }
+            return (Json(ssnss,JsonRequestBehavior.AllowGet));
         }
 
         public ActionResult Edit(int? id)
