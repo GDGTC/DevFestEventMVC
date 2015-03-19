@@ -18,6 +18,7 @@ namespace DevFestEvent.Controllers
         class TnySesh
         {
             public int ID { get; set; }
+            public int SheetID { get; set; }
             public string SessionName { get; set; }
             public string SessionHTML { get; set; }
             public string CustomURL { get; set; }
@@ -29,11 +30,12 @@ namespace DevFestEvent.Controllers
         {
             List<TnySesh> ssnss = new List<TnySesh>();
             ApplicationDbContext db = new ApplicationDbContext();
-            foreach (var s in db.Sessions)
+            foreach (var s in db.Sessions.Where(q=>q.IID >= 100 && q.Description != null) )
             {
                 ssnss.Add(new TnySesh()
                 {
-                    ID = s.IID,
+                    ID = s.ID,
+                    SheetID = s.IID,
                     SessionHTML = s.Description,
                     SessionName = s.Title,
                     CustomURL = s.CustomURL
